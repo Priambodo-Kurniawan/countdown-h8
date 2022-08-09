@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,400,700,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://pbutcher.uk/flipdown/css/flipdown/flipdown.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://pbutcher.uk/flipdown/css/style.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://pbutcher.uk/flipdown/js/flipdown/flipdown.js"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.22.0/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"
+      integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <title>Countdown</title>
+    <style>
+      #flipdown > .rotor-group:first-child {
+        display: none;
+      }
+      #flipdown {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body class="light-theme">
+    <div style="position: absolute; right: 50px; top: 30px;">
+      <label for="my-modal-4" class="btn btn-circle swap swap-rotate">
+        <!-- this hidden checkbox controls the state -->
+        <input type="checkbox" />
+
+        <!-- hamburger icon -->
+        <svg
+          class="swap-off fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+          />
+        </svg>
+
+        <!-- close icon -->
+        <svg
+          class="swap-on fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 512 512"
+        >
+          <polygon
+            points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"
+          />
+        </svg>
+      </label>
+      <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+      <label for="my-modal-4" class="modal cursor-pointer">
+        <label class="modal-box relative" for="">
+          <div>
+            <form onsubmit="event.preventDefault(); return saveData()">
+              <h3 class="text-lg font-bold text-center">
+                Setting
+              </h3>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text">Title Countdown</span>
+                </label>
+                <input
+                  id="title"
+                  type="text"
+                  placeholder="Type here"
+                  class="input input-bordered w-full"
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Hour</span>
+                  </label>
+                  <input
+                    id="hour"
+                    type="number"
+                    placeholder="Type here"
+                    class="input input-bordered w-full"
+                  />
+                </div>
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Minutes</span>
+                  </label>
+                  <input
+                    id="minute"
+                    type="number"
+                    placeholder="Type here"
+                    class="input input-bordered w-full"
+                  />
+                </div>
+              </div>
+              <div class="mt-4">
+                <button class="btn bg-orange-600 text-white btn-block">
+                  Start Countdown!
+                </button>
+              </div>
+            </form>
+          </div>
+        </label>
+      </label>
+    </div>
+    <div class="example light-theme">
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 20px;
+          margin-right: 20px;
+        "
+      >
+        <div
+          style="
+            border-radius: 100%;
+            background-color: white;
+            display: inline-block;
+            text-align: center;
+            margin-right: 20px;
+          "
+        >
+          <img
+            src="https://i.ibb.co/6r5Tz4V/logo-hacktiv8.png"
+            alt="logo"
+            style="width: 100px;"
+          />
+        </div>
+        <h1 id="titleDom">
+          FlipDown.js
+        </h1>
+      </div>
+      <div id="flipdown" class="flipdown flipdown__theme-light"></div>
+      <p style="margin-top: 20px;">
+        ⏰ <span id="title2">Livecode</span> will end at:
+        <span id="endtime">14:30 PM</span>
+      </p>
+    </div>
+
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative">
+        <label
+          for="my-modal-3"
+          class="btn btn-sm btn-circle absolute right-2 top-2"
+          >✕</label
+        >
+        <h1 class="text-lg font-bold text-center">Time is up!</h1>
+        <p class="py-4 text-center">
+          please stop coding! :D
+        </p>
+      </div>
+    </div>
+    <script>
+      var savedData = localStorage.getItem("duration");
+      if (savedData) {
+        savedData = JSON.parse(savedData);
+      } else {
+        savedData = {
+          title: "livecode",
+          hour: 1,
+          minute: 30,
+          startTime: new Date()
+        };
+      }
+      var title = savedData.title;
+      var hour = savedData.hour;
+      var minute = savedData.minute;
+      var titleDom = document.getElementById("title");
+      var hourDom = document.getElementById("hour");
+      var minuteDom = document.getElementById("minute");
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Unix timestamp (in seconds) to count down to
+        titleDom.value = savedData.title;
+        hourDom.value = +savedData.hour;
+        minuteDom.value = +savedData.minute;
+
+        startCountDown();
+      });
+
+      function startCountDown() {
+        var start = savedData.startTime;
+        var startdate = new Date();
+        if (start) {
+          startdate = new Date(start);
+        }
+        var nextTime = moment(startdate)
+          .add(hour, "hours")
+          .add(minute, "minutes");
+
+        var unixTime = nextTime.unix();
+
+        document.getElementById("titleDom").innerHTML = savedData.title;
+        document.getElementById("title2").innerHTML = savedData.title;
+        document.getElementById("endtime").innerHTML = moment(nextTime).format(
+          "hh:mm a"
+        );
+
+        // Set up FlipDown
+        document.getElementById("flipdown").innerHTML = "";
+        var flipdown = new FlipDown(unixTime, "flipdown")
+
+          // Start the countdown
+          .start()
+
+          // Do something when the countdown ends
+          .ifEnded(() => {
+            console.log("The countdown has ended!");
+            document.getElementById("my-modal-3").checked = true;
+          });
+      }
+
+      function saveData() {
+        savedData = {
+          title: titleDom.value,
+          hour: hourDom.value,
+          minute: minuteDom.value,
+          startTime: new Date()
+        };
+
+        localStorage.setItem("duration", JSON.stringify(savedData));
+        window.location.reload();
+      }
+    </script>
+  </body>
+</html>
