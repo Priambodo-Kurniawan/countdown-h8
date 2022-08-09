@@ -93,11 +93,11 @@
       <label for="my-modal-4" class="modal cursor-pointer">
         <label class="modal-box relative" for="">
           <div>
-            <form onsubmit="event.preventDefault(); return saveData()">
+            <form onsubmit="event.preventDefault(); return d()">
               <h3 class="text-lg font-bold text-center">
                 Setting
               </h3>
-              <div class="form-control w-full">
+              <div class="form-control w-full mb-4">
                 <label class="label">
                   <span class="label-text">Title Countdown</span>
                 </label>
@@ -108,7 +108,8 @@
                   class="input input-bordered w-full"
                 />
               </div>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="divider">Duration</div>
+              <div class="grid grid-cols-3 gap-4">
                 <div class="form-control">
                   <label class="label">
                     <span class="label-text">Hour</span>
@@ -131,12 +132,31 @@
                     class="input input-bordered w-full"
                   />
                 </div>
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Seconds</span>
+                  </label>
+                  <input
+                    id="second"
+                    value="0"
+                    type="number"
+                    placeholder="Type here"
+                    class="input input-bordered w-full"
+                  />
+                </div>
+              </div>
+              <div class="form-control mt-4">
+                <label class="label justify-start">
+                  <input id="check-auto" type="checkbox" class="checkbox" />
+                  <span class="label-text ml-4">Countdown will ended at the start of minute</span>
+                </label>
               </div>
               <div class="mt-4">
-                <button class="btn bg-orange-600 text-white btn-block">
+                <button class="btn bg-orange-600 text-white btn-block border-0">
                   Start Countdown!
                 </button>
               </div>
+              <div class="mt-2 text-center">⏰ Current Time: <span id="current-time" class="text-bold" ></span></div>
             </form>
           </div>
         </label>
@@ -185,6 +205,7 @@
         <label
           for="my-modal-3"
           class="btn btn-sm btn-circle absolute right-2 top-2"
+          onclick="audio.play()"
           >✕</label
         >
         <h1 class="text-lg font-bold text-center">Time is up!</h1>
@@ -202,34 +223,59 @@
           title: "Livecode Simulation",
           hour: 1,
           minute: 30,
+          second: 0,
           startTime: new Date()
         };
       }
       var title = savedData.title;
       var hour = savedData.hour;
       var minute = savedData.minute;
+      var second = savedData.second || 0;
       var titleDom = document.getElementById("title");
       var hourDom = document.getElementById("hour");
       var minuteDom = document.getElementById("minute");
+      var secondDom = document.getElementById("second");
+      var autoSecond = false
+      var span = document.getElementById('current-time');
+
+      function time() {
+        var d = new Date();
+        var s = d.getSeconds();
+        var m = d.getMinutes();
+        var h = d.getHours();
+        span.textContent = 
+          ("0" + h).substr(-2) + " : " + ("0" + m).substr(-2) + " : " + ("0" + s).substr(-2);
+        
+        if (autoSecond) {
+          secondDom.value = ("0" + (60 - s)).substr(-2)
+          secondDom.disabled = true;
+        } else {
+           secondDom.disabled = false;
+        }
+      }
+
+      setInterval(time, 1000);
 
       document.addEventListener("DOMContentLoaded", () => {
         // Unix timestamp (in seconds) to count down to
         titleDom.value = savedData.title;
         hourDom.value = +savedData.hour;
         minuteDom.value = +savedData.minute;
-
+        secondDom.value = +savedData.second;
+        
         startCountDown();
       });
 
       function startCountDown() {
         var start = savedData.startTime;
-        var startdate = new Date();
+        var startdate = moment();
         if (start) {
-          startdate = new Date(start);
+          startdate = moment(start);
         }
         var nextTime = moment(startdate)
           .add(hour, "hours")
-          .add(minute, "minutes");
+          .add(minute, "minutes")
+          .add(second, "seconds");
 
         var unixTime = nextTime.unix();
 
@@ -253,17 +299,36 @@
           });
       }
 
-      function saveData() {
+      function d() {
         savedData = {
           title: titleDom.value,
           hour: hourDom.value,
           minute: minuteDom.value,
+          second: secondDom.value,
           startTime: new Date()
         };
 
         localStorage.setItem("duration", JSON.stringify(savedData));
         window.location.reload();
       }
+      
+      let autoInput = document.getElementById("check-auto")
+      autoInput.addEventListener("change", (e) => {
+        if (e.target.checked) {
+          autoSecond = true
+        } else {
+          autoSecond = false
+        }
+      });
+      
+      function play() {
+        var audio = new Audio('https://www.orangefreesounds.com/wp-content/uploads/2021/02/Alarm-clock-bell-ringing-sound-effect.mp3');
+        audio.play();
+      }
+      
+      var audio = document.createElement("AUDIO")
+      document.body.appendChild(audio);
+      audio.src = "https://www.orangefreesounds.com/wp-content/uploads/2021/02/Alarm-clock-bell-ringing-sound-effect.mp3"
     </script>
   </body>
 </html>
