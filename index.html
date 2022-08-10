@@ -187,7 +187,7 @@
             style="width: 100px;"
           />
         </div>
-        <h1 id="titleDom">
+        <h1 id="titleDom" style="margin-top: -20px">
           FlipDown.js
         </h1>
       </div>
@@ -205,13 +205,17 @@
         <label
           for="my-modal-3"
           class="btn btn-sm btn-circle absolute right-2 top-2"
-          onclick="audio.play()"
           >✕</label
         >
         <h1 class="text-lg font-bold text-center">Time is up!</h1>
         <p class="py-4 text-center">
           please stop coding! :D
         </p>
+        <div class="mt-4">
+          <button onclick="audio.play()" class="btn bg-orange-600 text-white btn-block border-0">
+            🔔 Bell the Ring!
+          </button>
+        </div>
       </div>
     </div>
     <script>
